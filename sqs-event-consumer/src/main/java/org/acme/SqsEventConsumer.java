@@ -30,7 +30,7 @@ public class SqsEventConsumer {
         String queueArn = requestQueueArn(queueUrl);
         Log.info("Queue arn: " + queueArn);
 
-        String topicArn = snsClient.listTopics().topics().getFirst().topicArn();
+        String topicArn = snsClient.listTopics().topics().get(0).topicArn();
         Log.info("Subscribing to topic arn: " + topicArn);
         SubscribeResponse subscribeResponse = snsClient.subscribe(req -> req.topicArn(topicArn)
                 .protocol("sqs")

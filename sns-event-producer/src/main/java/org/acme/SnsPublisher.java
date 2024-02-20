@@ -18,8 +18,7 @@ public class SnsPublisher {
 
     @PostConstruct
     void createTopic() {
-        CreateTopicResponse myTopic = snsClient.createTopic(req -> req.name("MyTopic"));
-        topicArn = myTopic.topicArn();
+        topicArn = snsClient.listTopics().topics().get(0).topicArn();
         Log.info("Create topic with arn: " + topicArn);
     }
 
