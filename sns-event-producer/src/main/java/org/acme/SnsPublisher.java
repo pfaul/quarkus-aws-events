@@ -1,5 +1,6 @@
 package org.acme;
 
+import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,11 +20,14 @@ public class SnsPublisher {
     void createTopic() {
         CreateTopicResponse myTopic = snsClient.createTopic(req -> req.name("MyTopic"));
         topicArn = myTopic.topicArn();
+        Log.info("Create topic with arn: " + topicArn);
     }
 
     @Scheduled(every = "30s")
     void publish() {
-        snsClient.publish(req -> req.topicArn(topicArn).message("TestMessage " + System.currentTimeMillis()));
+        String message = "TestMessage " + System.currentTimeMillis();
+        snsClient.publish(req -> req.topicArn(topicArn).message(message));
+        Log.info("Published: " + message);
     }
 
 }
